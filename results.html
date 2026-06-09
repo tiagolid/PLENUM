@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html class="light" lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>​</title>
+  <link rel="stylesheet" href="styles.css"/>
+
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-left">
+      <button class="icon-btn accent" id="menu-btn" title="Menu" aria-expanded="false">
+        <span class="material-symbols-outlined" style="font-size:20px;">menu</span>
+      </button>
+      <button class="icon-btn" id="back-btn" title="Voltar">
+        <span class="material-symbols-outlined" style="font-size:20px;">arrow_back</span>
+      </button>
+    </div>
+    <div class="header-center">
+      <img src="icons/plenum_icon_transparent.png" alt="" class="logo-icon logo-icon-dark" />
+      <img src="icons/plenum_icon_light.png" alt="" class="logo-icon logo-icon-light" />
+      <span class="logo">Plenum</span>
+    </div>
+    <div class="header-right">
+      <button class="icon-btn" id="theme-toggle" title="Alternar tema">
+        <span class="material-symbols-outlined" id="theme-icon" style="font-size:20px;">dark_mode</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main id="results-main">
+
+    <!-- Nome do aluno -->
+    <div>
+      <h1 class="student-name" id="student-name">—</h1>
+    </div>
+
+    <!-- ══ SEÇÃO DADOS ALUNO ══ -->
+    <section class="data-section" id="section-aluno">
+      <div class="section-header">
+        <h2>Dados do Aluno</h2>
+        <span class="material-symbols-outlined" style="font-size:18px;flex-shrink:0;">person</span>
+      </div>
+      <div class="section-body">
+
+        <!-- CPF -->
+        <div class="field-row full">
+          <div class="field">
+            <span class="field-label"><span class="sq"></span>CPF</span>
+            <span class="field-value" id="f-cpf">—</span>
+          </div>
+        </div>
+
+        <!-- E-mail -->
+        <div class="field-row full">
+          <div class="field">
+            <span class="field-label"><span class="sq"></span>E-mail</span>
+            <span class="field-value" id="f-email">—</span>
+          </div>
+        </div>
+
+        <!-- Telefones -->
+        <div class="field-row">
+          <div class="field">
+            <span class="field-label"><span class="sq"></span>Telefone 1</span>
+            <span class="field-value" id="f-tel1">—</span>
+          </div>
+          <div class="field">
+            <span class="field-label"><span class="sq"></span>Telefone 2</span>
+            <span class="field-value" id="f-tel2">—</span>
+          </div>
+        </div>
+
+        <!-- Nascimento + Último Acesso Moodle -->
+        <div class="field-row">
+          <div class="field">
+            <span class="field-label"><span class="sq"></span>Nascimento</span>
+            <span class="field-value" id="f-nasc">—</span>
+          </div>
+          <div class="field">
+            <span class="field-label"><span class="sq"></span>Último Acesso Moodle</span>
+            <span class="field-value" id="f-acesso-moodle">—</span>
+          </div>
+        </div>
+
+        <!-- Botões -->
+        <div class="btn-group">
+          <div id="wrap-btn-perfil">
+            <button class="btn-primary btn-accent brutal-btn" id="btn-perfil">
+              <span class="material-symbols-outlined" style="font-size:18px;">login</span>
+              Acessar Perfil Aluno
+            </button>
+          </div>
+          <button class="btn-secondary brutal-btn" id="btn-copy-aluno">
+            <span class="material-symbols-outlined" style="font-size:16px;">content_copy</span>
+            Copiar Dados do Aluno
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Navegação de matrículas (múltiplos registros) -->
+    <div class="matricula-nav" id="matricula-nav" style="display:none;">
+      <span class="nav-info" id="nav-info">Matrícula 1 de 1</span>
+      <div class="nav-btns">
+        <button class="nav-btn" id="nav-prev" disabled>
+          <span class="material-symbols-outlined" style="font-size:18px;">chevron_left</span>
+        </button>
+        <button class="nav-btn" id="nav-next" disabled>
+          <span class="material-symbols-outlined" style="font-size:18px;">chevron_right</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ══ SEÇÃO MATRÍCULA ══ -->
+    <section class="data-section" id="section-matricula">
+      <div class="section-header">
+        <h3 id="m-curso-nome">—</h3>
+        <span class="material-symbols-outlined" style="font-size:18px;flex-shrink:0;">school</span>
+      </div>
+      <div class="section-body">
+
+        <!-- Grade: Início / Fim / Cód. Modalidade / Nome Modalidade -->
+        <div class="date-grid">
+          <div class="date-box">
+            <p class="date-label">Início</p>
+            <p class="date-value" id="m-inicio">—</p>
+          </div>
+          <div class="date-box">
+            <p class="date-label">Fim</p>
+            <p class="date-value" id="m-fim">—</p>
+          </div>
+          <div class="date-box">
+            <p class="date-label">Cód. Modalidade</p>
+            <p class="date-value" id="m-cod-modal">—</p>
+          </div>
+          <div class="date-box">
+            <p class="date-label">Nome Modalidade</p>
+            <p class="date-value" id="m-modalidade" style="font-size:9px;word-break:break-word;">—</p>
+          </div>
+        </div>
+
+        <!-- Acesso ao Curso + Nota Total -->
+        <div class="score-row">
+          <div class="score-left">
+            <p class="slabel">Acesso ao Curso</p>
+            <p class="svalue" id="m-acesso-curso">—</p>
+          </div>
+          <div>
+            <p class="date-label" style="text-align:right;margin-bottom:4px;">Nota Total</p>
+            <p class="score-num" id="m-nota">—</p>
+          </div>
+        </div>
+
+        <!-- Badges de status -->
+        <div class="status-row">
+          <div class="status-badge neutral" id="badge-moodle">
+            <span class="badge-label">Moodle</span>
+            <span class="badge-value" id="m-status-moodle">—</span>
+          </div>
+          <div class="status-badge neutral" id="badge-gestor">
+            <span class="badge-label">SIGE</span>
+            <span class="badge-value" id="m-status-gestor">—</span>
+          </div>
+        </div>
+
+        <!-- Botões Matrícula -->
+        <div class="btn-group">
+          <div style="display:flex;gap:8px;">
+            <div id="wrap-btn-uc" style="flex:1;">
+              <button class="btn-primary btn-accent brutal-btn" id="btn-uc" style="width:100%;text-align:center;">
+                Acessar<br>UC
+              </button>
+            </div>
+            <div id="wrap-btn-categoria" style="flex:1;">
+              <button class="btn-primary btn-accent brutal-btn" id="btn-categoria" style="width:100%;text-align:center;">
+                Acessar<br>Curso
+              </button>
+            </div>
+          </div>
+          <button class="btn-secondary brutal-btn" id="btn-copy-matricula">
+            <span class="material-symbols-outlined" style="font-size:16px;">copy_all</span>
+            Copiar Dados da Matrícula
+          </button>
+        </div>
+
+        <!-- ══ Sub-seção Unidade ══ -->
+        <div style="padding-top:16px;margin-top:4px;border-top:3px solid var(--border-color);">
+          <div class="unit-header">
+            <span class="material-symbols-outlined">hub</span>
+            <h4>Unidade que Matriculou</h4>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div class="field">
+              <span class="field-label"><span class="sq"></span>ID Unidade Gestor</span>
+              <span class="field-value" id="u-id">—</span>
+            </div>
+            <div class="field">
+              <span class="field-label"><span class="sq"></span>Nome Unidade</span>
+              <span class="field-value" id="u-nome">—</span>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <span class="field-label"><span class="sq"></span>E-mail Unidade</span>
+                <span class="field-value" id="u-email" style="font-size:10px;word-break:break-all;">—</span>
+              </div>
+              <div class="field">
+                <span class="field-label"><span class="sq"></span>Telefone Unidade</span>
+                <span class="field-value" id="u-tel">—</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="btn-group" style="margin-top:14px;">
+            <button class="btn-secondary brutal-btn" id="btn-copy-unidade">
+              <span class="material-symbols-outlined" style="font-size:16px;">content_copy</span>
+              Copiar Dados da Unidade
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="flex-direction:column;gap:14px;">
+      <div style="display:flex;align-items:flex-start;gap:10px;">
+        <span class="material-symbols-outlined" style="font-size:20px;opacity:0.5;flex-shrink:0;">update</span>
+        <p>Os dados podem estar atrasados em até <strong>1 dia</strong>, tenha isso em mente ao utilizar.</p>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px;">
+        <span class="material-symbols-outlined" style="font-size:20px;opacity:0.5;flex-shrink:0;">bug_report</span>
+        <p>Encontrou um bug? Fale com o <strong>Monitor Tiago</strong> no Teams: <strong>tiagosantos@fieg.com.br</strong></p>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Toast -->
+  <div id="toast">Copiado!</div>
+
+  <!-- ── Navigation Drawer ────────────────────────────────────── -->
+  <aside id="nav-drawer" role="dialog" aria-modal="true" aria-label="Menu de navegação">
+
+    <div style="padding:32px 32px 48px;display:flex;justify-content:space-between;align-items:flex-start;">
+      <div>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:900;color:#fff;letter-spacing:-0.04em;">
+          PLENUM
+        </h2>
+        <div style="height:4px;width:48px;background:#ffd709;margin-top:8px;"></div>
+      </div>
+      <button id="drawer-close-btn" title="Fechar menu"
+        style="color:#ffd709;background:none;border:none;cursor:pointer;padding:4px;display:flex;align-items:center;">
+        <span class="material-symbols-outlined" style="font-size:30px;font-weight:700;">close</span>
+      </button>
+    </div>
+
+    <nav style="display:flex;flex-direction:column;flex:1;">
+
+      <a href="sidepanel.html" class="drawer-item"
+        style="padding:24px;display:flex;align-items:center;gap:16px;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;text-transform:uppercase;transition:all .2s;">
+        <span class="material-symbols-outlined" style="font-weight:700;">search</span>
+        Buscar Aluno
+      </a>
+
+      <a href="#" class="drawer-item active" id="drawer-dados-aluno"
+        style="padding:24px;display:flex;align-items:center;gap:16px;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;text-transform:uppercase;transition:all .2s;">
+        <span class="material-symbols-outlined">person</span>
+        Dados Aluno
+      </a>
+
+      <a href="messages.html" class="drawer-item"
+        style="padding:24px;display:flex;align-items:center;gap:16px;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;text-transform:uppercase;transition:all .2s;">
+        <span class="material-symbols-outlined">mail</span>
+        Modelos de Mensagens
+      </a>
+
+
+      <a href="monitors.html" class="drawer-item"
+        style="padding:24px;display:flex;align-items:center;gap:16px;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;text-transform:uppercase;transition:all .2s;">
+        <span class="material-symbols-outlined">monitor</span>
+        Monitores
+      </a>
+
+    </nav>
+
+    <div style="padding:24px 32px;margin-top:auto;border-top:3px solid rgba(255,255,255,0.1);">
+      <p style="font-size:10px;color:#555;font-weight:700;text-transform:uppercase;letter-spacing:0.2em;">Plenum &mdash; v1.0</p>
+    </div>
+
+  </aside>
+
+  <script src="results.js"></script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html class="light" lang="pt-BR">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>​</title>
+  <link rel="stylesheet" href="styles.css" />
+
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-left">
+      <button class="icon-btn accent" id="menu-btn" title="Menu">
+        <span class="material-symbols-outlined" style="font-size:20px;">menu</span>
+      </button>
+    </div>
+    <div class="header-center">
+      <img src="icons/plenum_icon_transparent.png" alt="" class="logo-icon logo-icon-dark" />
+      <img src="icons/plenum_icon_light.png" alt="" class="logo-icon logo-icon-light" />
+      <span class="logo">Plenum</span>
+    </div>
+    <div class="header-right">
+      <button class="icon-btn" id="theme-toggle" title="Alternar tema">
+        <span class="material-symbols-outlined" id="theme-icon" style="font-size:20px;">dark_mode</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main id="main-content">
+
+    <!-- Hero -->
+    <section>
+      <h1 class="hero-title">
+        Localize registros em <span class="highlight">segundos.</span>
+      </h1>
+    </section>
+    <p class="hero-sub">
+      Insira os dados do aluno para buscar informações de matrícula ou abra uma conversa no <strong>WhatsApp
+        Web</strong> e use a <strong>Busca Automática</strong> para detectar o contato instantaneamente.
+    </p>
+
+    <!-- Search Form -->
+    <div id="search-form" style="display:flex;flex-direction:column;gap:18px;">
+
+      <!-- Tipo de busca -->
+      <div class="form-group">
+        <label class="form-label" for="search-type">
+          <span class="dot"></span>
+          Tipo de busca
+        </label>
+        <div class="select-wrap">
+          <select id="search-type">
+            <option value="cpf">CPF</option>
+            <option value="email">Email</option>
+            <option value="telefone">Telefone</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Dado do aluno -->
+      <div class="form-group">
+        <label class="form-label" for="search-value">
+          <span class="dot"></span>
+          Dado do aluno
+        </label>
+        <div class="input-wrap">
+          <input type="text" id="search-value" placeholder="Digite aqui..." autocomplete="off" spellcheck="false" />
+          <span class="material-symbols-outlined search-icon" style="font-size:20px;">search</span>
+        </div>
+      </div>
+
+      <!-- Error banner -->
+      <div id="error-banner">
+        <span class="material-symbols-outlined" style="font-size:18px;">error</span>
+        <span id="error-msg">Erro ao buscar. Tente novamente.</span>
+      </div>
+
+      <!-- Buttons -->
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <button class="btn-primary brutal-btn" id="search-btn">
+          <span class="material-symbols-outlined" style="font-size:20px;">search</span>
+          BUSCAR
+        </button>
+        <button class="btn-primary btn-accent brutal-btn" id="auto-search-btn">
+          <span class="material-symbols-outlined"
+            style="font-size:20px;font-variation-settings:'FILL' 1,'wght' 700,'GRAD' 0,'opsz' 24;">auto_awesome</span>
+          BUSCA AUTOMÁTICA
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Loading State -->
+    <div id="loading-state">
+      <div class="spinner"></div>
+      <p class="loading-text">Buscando dados do aluno...</p>
+    </div>
+
+    <!-- Footer -->
+    <footer style="flex-direction:column;gap:14px;">
+      <div style="display:flex;align-items:flex-start;gap:10px;">
+        <span class="material-symbols-outlined" style="font-size:20px;opacity:0.5;flex-shrink:0;">update</span>
+        <p>Os dados podem estar atrasados em até <strong>1 dia</strong>, tenha isso em mente ao utilizar.</p>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px;">
+        <span class="material-symbols-outlined" style="font-size:20px;opacity:0.5;flex-shrink:0;">bug_report</span>
+        <p>Encontrou um bug? Fale com o <strong>Monitor Tiago</strong> no Teams:
+          <strong>tiagosantos@fieg.com.br</strong></p>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Toast -->
+  <div id="toast">Copiado!</div>
+
+  <!-- ── Navigation Drawer ──────────────────────────────────────── -->
+  <aside id="nav-drawer" role="dialog" aria-modal="true" aria-label="Menu de navegação">
+
+    <!-- Brand + Close -->
+    <div style="padding:32px 32px 48px;display:flex;justify-content:space-between;align-items:flex-start;">
+      <div>
+        <h2
+          style="font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:900;color:#fff;letter-spacing:-0.04em;">
+          PLENUM
+        </h2>
+        <div style="height:4px;width:48px;background:#ffd709;margin-top:8px;"></div>
+      </div>
+      <button id="drawer-close-btn" title="Fechar menu"
+        style="color:#ffd709;background:none;border:none;cursor:pointer;padding:4px;display:flex;align-items:center;">
+        <span class="material-symbols-outlined" style="font-size:30px;font-weight:700;">close</span>
+      </button>
+    </div>
+
+    <!-- Nav Items -->
+    <nav style="display:flex;flex-direction:column;flex:1;">
+
+      <a href="#" class="drawer-item active"
+        style="padding:24px;display:flex;align-items:center;gap:16px;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;text-transform:uppercase;transition:all .2s;">
+        <span class="material-symbols-outlined" style="font-weight:700;">search</span>
+        Buscar Aluno
+      </a>
+
+      <a href="#" class="drawer-item" id="drawer-dados-aluno"
+        style="padding:24px;display:flex;align-items:center;gap:16px;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;text-transform:uppercase;transition:all .2s;">
+        <span class="material-symbols-outlined">person</span>
+        Dados Aluno
+      </a>
+
+      <a href="messages.html" class="drawer-item" id="drawer-modelos-mensagens"
+        style="padding:24px;display:flex;align-items:center;gap:16px;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;text-transform:uppercase;transition:all .2s;">
+        <span class="material-symbols-outlined">mail</span>
+        Modelos de Mensagens
+      </a>
+
+
+      <a href="monitors.html" class="drawer-item"
+        style="padding:24px;display:flex;align-items:center;gap:16px;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;text-transform:uppercase;transition:all .2s;">
+        <span class="material-symbols-outlined">monitor</span>
+        Monitores
+      </a>
+
+    </nav>
+
+    <!-- Footer -->
+    <div style="padding:24px 32px;margin-top:auto;border-top:3px solid rgba(255,255,255,0.1);">
+      <p style="font-size:10px;color:#555;font-weight:700;text-transform:uppercase;letter-spacing:0.2em;">Plenum
+        &mdash; v1.0</p>
+    </div>
+
+  </aside>
+
+  <script src="sidepanel.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html class="light" lang="pt-BR">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>​</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ── Page specific ─────────────────────────────────────────────── */
+    .page-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 26px;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      color: var(--fg);
+    }
+
+    .page-subtitle {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--fg);
+      opacity: 0.5;
+      margin-top: 4px;
+    }
+
+    /* Monitor input card */
+    .monitor-card {
+      border: 3px solid var(--border-color);
+      background: var(--bg-card);
+      box-shadow: 6px 6px 0px 0px var(--shadow-color);
+      overflow: hidden;
+    }
+
+    .monitor-card-header {
+      background: var(--fg);
+      color: var(--bg);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .monitor-card-header h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .monitor-card-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .monitor-input-wrap {
+      position: relative;
+    }
+
+    #input-monitor {
+      width: 100%;
+      height: 52px;
+      padding: 0 14px;
+      border: 3px solid var(--border-color);
+      background-color: var(--input-bg);
+      color: var(--fg);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      outline: none;
+      transition: background 0.15s, color 0.15s;
+      border-radius: 0;
+    }
+
+    #input-monitor::placeholder {
+      color: var(--input-ph);
+      font-weight: 400;
+    }
+
+    #input-monitor:focus {
+      background-color: var(--accent);
+      color: var(--black);
+    }
+
+    #input-monitor:focus::placeholder {
+      color: rgba(0, 0, 0, 0.4);
+    }
+
+    /* Message template cards */
+    .msg-card {
+      border: 3px solid var(--border-color);
+      background: var(--bg-card);
+      box-shadow: 6px 6px 0px 0px var(--shadow-color);
+      overflow: hidden;
+      animation: slide-in 0.25s ease forwards;
+    }
+
+    .msg-card-header {
+      background: var(--fg);
+      color: var(--bg);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .msg-card-header.accent {
+      background: var(--accent);
+      color: var(--black);
+    }
+
+    .msg-card-header h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .msg-card-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .msg-label {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--fg);
+      opacity: 0.6;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .msg-label .sq {
+      width: 6px;
+      height: 6px;
+      background: var(--fg);
+      display: inline-block;
+      flex-shrink: 0;
+      opacity: 0.6;
+    }
+
+    .msg-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.6;
+      color: var(--fg);
+    }
+
+    /* Empty state */
+    #empty-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 48px 20px;
+      text-align: center;
+      border: 3px dashed var(--border-color);
+      opacity: 0.5;
+    }
+
+    #empty-state .empty-icon {
+      font-size: 42px;
+    }
+
+    #empty-state p {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      line-height: 1.5;
+    }
+
+    /* Loading state for search */
+    #msgs-loading {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 40px 20px;
+    }
+
+    #msgs-loading.active { display: flex; }
+
+    /* Messages list container */
+    #messages-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* Copy button feedback */
+    .btn-copy {
+      transition: background 0.15s, color 0.15s, transform 0.08s, box-shadow 0.08s;
+    }
+
+    .btn-copy.copied {
+      background: var(--status-green) !important;
+      color: var(--black) !important;
+    }
+
+    /* Count badge */
+    #msg-count {
+      display: inline-block;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-left">
+      <button class="icon-btn accent" id="menu-btn" title="Menu">
+        <span class="material-symbols-outlined" style="font-size:20px;">menu</span>
+      </button>
+    </div>
+    <div class="header-center">
+      <img src="icons/plenum_icon_transparent.png" alt="" class="logo-icon logo-icon-dark" />
+      <img src="icons/plenum_icon_light.png" alt="" class="logo-icon logo-icon-light" />
+      <span class="logo">Plenum</span>
+    </div>
+    <div class="header-right">
+      <button class="icon-btn" id="theme-toggle" title="Alternar tema">
+        <span class="material-symbols-outlined" id="theme-icon" style="font-size:20px;">dark_mode</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main id="main-content">
+
+    <!-- Page Title -->
+    <section style="display:flex; justify-content:space-between; align-items:center;">
+      <div>
+        <h1 class="page-title">Modelos de <span class="highlight">Mensagens</span></h1>
+        <p class="page-subtitle" id="msg-count">Digite o nome do monitor e busque</p>
+      </div>
+      <button id="toggle-search-btn" title="Nova Busca" style="display:none; width:40px; height:40px; justify-content:center; align-items:center; background:var(--bg-card); border:2px solid var(--border-color); cursor:pointer; color:var(--fg); border-radius:8px; transition:all 0.2s;">
+        <span class="material-symbols-outlined" style="font-size:20px;">search</span>
+      </button>
+    </section>
+
+    <!-- Compact Search Input -->
+    <div class="monitor-card" id="search-container" style="margin-bottom: 24px;">
+      <div class="monitor-card-header" style="padding: 8px 16px;">
+        <h3>Nome do Monitor</h3>
+        <span class="material-symbols-outlined" style="font-size:16px;">manage_accounts</span>
+      </div>
+      <div class="monitor-card-body" style="padding: 12px 16px; display: flex; gap: 8px;">
+        <div class="monitor-input-wrap" style="flex: 1;">
+          <input
+            type="text"
+            id="input-monitor"
+            placeholder="Ex: Fulano (apenas o primeiro nome)..."
+            autocomplete="off"
+            spellcheck="false"
+            style="width: 100%; height: 42px; padding: 0 14px; border: 3px solid var(--border-color); background-color: var(--input-bg); color: var(--fg); font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; outline: none; transition: background 0.15s, color 0.15s; border-radius: 0;"
+          />
+        </div>
+        <button class="btn-primary btn-accent brutal-btn" id="search-msgs-btn" style="height: 42px; padding: 0 16px; min-height: 42px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+          <span class="material-symbols-outlined" style="font-size:20px;">search</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading state -->
+    <div id="msgs-loading">
+      <div class="spinner"></div>
+      <p class="loading-text">Carregando modelos...</p>
+    </div>
+
+    <!-- Empty state (shown before first search) -->
+    <div id="empty-state" style="display:flex;">
+      <span class="material-symbols-outlined empty-icon">chat_bubble_outline</span>
+      <p>Digite o nome do monitor<br>e clique em Buscar Mensagens</p>
+    </div>
+
+    <!-- Messages list (hidden until search runs) -->
+    <div id="messages-list" style="display:none;"></div>
+
+    <!-- Footer -->
+    <footer style="flex-direction:column;gap:14px;">
+      <div style="display:flex;align-items:flex-start;gap:10px;">
+        <span class="material-symbols-outlined" style="font-size:20px;opacity:0.5;flex-shrink:0;">info</span>
+        <p>Substitua os campos entre <strong>[COLCHETES]</strong> antes de enviar a mensagem ao aluno.</p>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Toast -->
+  <div id="toast">Copiado!</div>
+
+  <!-- ── Navigation Drawer ───────────────────────────────────────── -->
+  <aside id="nav-drawer" role="dialog" aria-modal="true" aria-label="Menu de navegação">
+
+    <!-- Brand + Close -->
+    <div style="padding:32px 32px 48px;display:flex;justify-content:space-between;align-items:flex-start;">
+      <div>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:900;color:#fff;letter-spacing:-0.04em;">
+          PLENUM
+        </h2>
+        <div style="height:4px;width:48px;background:#ffd709;margin-top:8px;"></div>
+      </div>
+      <button id="drawer-close-btn" title="Fechar menu"
+        style="color:#ffd709;background:none;border:none;cursor:pointer;padding:4px;display:flex;align-items:center;">
+        <span class="material-symbols-outlined" style="font-size:30px;font-weight:700;">close</span>
+      </button>
+    </div>
+
+    <!-- Nav Items -->
+    <nav style="display:flex;flex-direction:column;flex:1;">
+
+      <a href="sidepanel.html" class="drawer-item"
+        style="padding:24px;display:flex;align-items:center;gap:16px;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;text-transform:uppercase;transition:all .2s;">
+        <span class="material-symbols-outlined" style="font-weight:700;">search</span>
+        Buscar Aluno
+      </a>
+
+      <a href="#" class="drawer-item" id="drawer-dados-aluno"
+        style="padding:24px;display:flex;align-items:center;gap:16px;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;text-transform:uppercase;transition:all .2s;">
+        <span class="material-symbols-outlined">person</span>
+        Dados Aluno
+      </a>
+
+      <a href="messages.html" class="drawer-item active"
+        style="padding:24px;display:flex;align-items:center;gap:16px;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;text-transform:uppercase;transition:all .2s;">
+        <span class="material-symbols-outlined">mail</span>
+        Modelos de Mensagens
+      </a>
+
+
+      <a href="monitors.html" class="drawer-item"
+        style="padding:24px;display:flex;align-items:center;gap:16px;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;text-transform:uppercase;transition:all .2s;">
+        <span class="material-symbols-outlined">monitor</span>
+        Monitores
+      </a>
+
+    </nav>
+
+    <!-- Footer -->
+    <div style="padding:24px 32px;margin-top:auto;border-top:3px solid rgba(255,255,255,0.1);">
+      <p style="font-size:10px;color:#555;font-weight:700;text-transform:uppercase;letter-spacing:0.2em;">Plenum &mdash; v1.0</p>
+    </div>
+
+  </aside>
+
+  <script src="messages.js"></script>
+</body>
+
+</html>
