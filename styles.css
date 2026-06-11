@@ -930,6 +930,12 @@ html.dark .date-box .date-value[title="Clique para copiar"]:hover {
   transition-delay: 0.36s;
 }
 
+#nav-drawer.open .drawer-item:nth-child(6) {
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: 0.42s;
+}
+
 #drawer-close-btn:hover {
   animation: pulse-close 0.4s ease;
 }

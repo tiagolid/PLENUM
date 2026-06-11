@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html class="light" lang="pt-BR">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>​</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ── Page specific ─────────────────────────────────────────────── */
+    .page-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 26px;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      color: var(--fg);
+    }
+
+    .page-subtitle {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--fg);
+      opacity: 0.5;
+      margin-top: 4px;
+    }
+
+    /* ── Monitor selection modal ──────────────────────────────────── */
+    #monitor-select-card {
+      border: 3px solid var(--border-color);
+      background: var(--bg-card);
+      box-shadow: 6px 6px 0px 0px var(--shadow-color);
+      overflow: hidden;
+      animation: slide-in 0.25s ease forwards;
+    }
+
+    #monitor-select-card .card-header {
+      background: var(--accent);
+      color: var(--black);
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    #monitor-select-card .card-header h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    #monitor-select-card .card-body {
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    #monitor-select-card .card-body .form-group {
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* ── WebAula cards ────────────────────────────────────────────── */
+    #webaulas-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .webaula-card {
+      border: 3px solid var(--border-color);
+      background: var(--bg-card);
+      box-shadow: 6px 6px 0px 0px var(--shadow-color);
+      overflow: hidden;
+      animation: slide-in 0.25s ease forwards;
+    }
+
+    .webaula-card-header {
+      background: var(--fg);
+      color: var(--bg);
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .webaula-card-header .wa-curso {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .webaula-card-header .wa-estado {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      background: var(--accent);
+      color: var(--black);
+      padding: 2px 8px;
+      border: 2px solid var(--border-color);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .webaula-card-body {
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* ── Field rows inside webaula cards ──────────────────────────── */
+    .wa-field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .wa-field-row.full {
+      grid-template-columns: 1fr;
+    }
+
+    .wa-field {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .wa-field-label {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--fg);
+      opacity: 0.6;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .wa-field-label .sq {
+      width: 6px;
+      height: 6px;
+      background: var(--fg);
+      opacity: 0.6;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .wa-field-value {
+      font-size: 11px;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--fg);
+      word-break: break-all;
+      cursor: pointer;
+      transition: color 0.15s;
+    }
+
+    .wa-field-value:hover {
+      color: #b8860b;
+    }
+
+    html.dark .wa-field-value:hover {
+      color: var(--accent);
+    }
+
+    .wa-field-value:active {
+      opacity: 0.55;
+    }
+
+    .wa-field-value.null-val {
+      opacity: 0.3;
+      cursor: default;
+      font-style: italic;
+    }
+
+    .wa-field-value.null-val:hover {
+      color: var(--fg);
+    }
+
+    /* ── Status badges ────────────────────────────────────────────── */
+    .wa-status-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .wa-badge {
+      flex: 1;
+      border: 3px solid var(--border-color);
+      padding: 5px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1px;
+    }
+
+    .wa-badge .badge-label {
+      font-size: 8px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .wa-badge .badge-value {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .wa-badge.green {
+      background: #22C55E;
+      color: var(--black);
+      border-color: var(--black);
+    }
+
+    .wa-badge.red {
+      background: #EF4444;
+      color: var(--white);
+      border-color: var(--black);
+    }
+
+    .wa-badge.neutral {
+      background: var(--bg);
+      color: var(--fg);
+    }
+
+    .wa-badge.yellow {
+      background: var(--accent);
+      color: var(--black);
+      border-color: var(--black);
+    }
+
+    /* ── Action buttons grid ──────────────────────────────────────── */
+    .wa-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    .wa-action-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 7px 6px;
+      border: 3px solid var(--border-color);
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 4px 4px 0px 0px var(--shadow-color);
+      transition: transform 0.08s, box-shadow 0.08s, background 0.15s, color 0.15s;
+    }
+
+    .wa-action-btn:hover {
+      background: var(--fg);
+      color: var(--bg);
+    }
+
+    .wa-action-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0px 0px var(--shadow-color);
+    }
+
+    .wa-action-btn.accent-btn {
+      background: var(--accent);
+      color: var(--black);
+      border-color: var(--border-color);
+    }
+
+    .wa-action-btn.accent-btn:hover {
+      background: var(--fg);
+      color: var(--bg);
+    }
+
+    /* ── Separator ────────────────────────────────────────────────── */
+    .wa-separator {
+      border: none;
+      border-top: 3px solid var(--border-color);
+      margin: 2px 0;
+    }
+
+    /* ── Loading state ────────────────────────────────────────────── */
+    #webaulas-loading {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 48px 20px;
+    }
+
+    #webaulas-loading.active {
+      display: flex;
+    }
+
+    /* ── Error state ──────────────────────────────────────────────── */
+    #webaulas-error {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 40px 20px;
+      border: 3px solid var(--border-color);
+      background: var(--bg-card);
+      box-shadow: 6px 6px 0px 0px var(--shadow-color);
+      text-align: center;
+    }
+
+    #webaulas-error.active {
+      display: flex;
+    }
+
+    #webaulas-error .error-icon {
+      font-size: 42px;
+      color: var(--fg);
+      opacity: 0.4;
+    }
+
+    #webaulas-error .error-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--fg);
+    }
+
+    #webaulas-error .error-desc {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--fg);
+      opacity: 0.5;
+      line-height: 1.5;
+    }
+
+    /* ── Empty / no results ───────────────────────────────────────── */
+    #webaulas-empty {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 48px 20px;
+      text-align: center;
+      border: 3px dashed var(--border-color);
+      opacity: 0.5;
+    }
+
+    #webaulas-empty.active {
+      display: flex;
+    }
+
+    #webaulas-empty .empty-icon {
+      font-size: 42px;
+    }
+
+    #webaulas-empty p {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      line-height: 1.5;
+    }
+
+    /* ── Count tag ────────────────────────────────────────────────── */
+    .count-tag {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--black);
+      font-size: 9px;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 2px 7px;
+      border: 2px solid var(--border-color);
+      vertical-align: middle;
+      margin-left: 6px;
+    }
+
+    /* ── Change monitor banner ────────────────────────────────────── */
+    #change-monitor-banner {
+      display: none;
+      border: 3px solid var(--border-color);
+      background: var(--bg-card);
+      padding: 12px 16px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      animation: slide-in 0.25s ease forwards;
+    }
+
+    #change-monitor-banner.active {
+      display: flex;
+    }
+
+    #change-monitor-banner .banner-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #change-monitor-banner .banner-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--fg);
+    }
+
+    #change-monitor-banner .banner-label {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--fg);
+      opacity: 0.5;
+    }
+
+    #change-monitor-btn {
+      background: none;
+      border: 2px solid var(--border-color);
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--fg);
+      transition: background 0.15s, color 0.15s;
+    }
+
+    #change-monitor-btn:hover {
+      background: var(--fg);
+      color: var(--bg);
+    }
+
+    /* ── Category divider ─────────────────────────────────────────── */
+    .wa-date-divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 4px 0;
+    }
+
+    .wa-date-divider .divider-line {
+      flex: 1;
+      height: 3px;
+      background: var(--border-color);
+    }
+
+    .wa-date-divider .divider-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--fg);
+      opacity: 0.5;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-left">
+      <button class="icon-btn accent" id="menu-btn" title="Menu">
+        <span class="material-symbols-outlined" style="font-size:20px;">menu</span>
+      </button>
+    </div>
+    <div class="header-center">
+      <img src="icons/plenum_icon_transparent.png" alt="" class="logo-icon logo-icon-dark" />
+      <img src="icons/plenum_icon_light.png" alt="" class="logo-icon logo-icon-light" />
+      <span class="logo">Plenum</span>
+    </div>
+    <div class="header-right">
+      <button class="icon-btn" id="theme-toggle" title="Alternar tema">
+        <span class="material-symbols-outlined" id="theme-icon" style="font-size:20px;">dark_mode</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main id="main-content">
+
+    <!-- Page Title -->
+    <section style="display:flex; justify-content:space-between; align-items:center;">
+      <div>
+        <h1 class="page-title">Web <span class="highlight">Aulas</span></h1>
+        <p class="page-subtitle" id="webaulas-subtitle">Carregando dados da semana...</p>
+      </div>
+      <button id="refresh-webaulas-btn" title="Atualizar dados" style="display:none; width:40px; height:40px; justify-content:center; align-items:center; background:var(--bg-card); border:2px solid var(--border-color); cursor:pointer; color:var(--fg); border-radius:8px; transition:all 0.2s;">
+        <span class="material-symbols-outlined" style="font-size:20px;">refresh</span>
+      </button>
+    </section>
+
+    <!-- Change Monitor Banner -->
+    <div id="change-monitor-banner">
+      <div class="banner-info">
+        <span class="material-symbols-outlined" style="font-size:18px; color: var(--accent);">person</span>
+        <div>
+          <p class="banner-label">Monitor selecionado</p>
+          <p class="banner-name" id="selected-monitor-name">—</p>
+        </div>
+      </div>
+      <button id="change-monitor-btn" title="Trocar monitor">
+        <span class="material-symbols-outlined" style="font-size:16px;">swap_horiz</span>
+      </button>
+    </div>
+
+    <!-- Monitor Selection Card -->
+    <div id="monitor-select-card" style="display:none;">
+      <div class="card-header">
+        <h3>Quem é você?</h3>
+        <span class="material-symbols-outlined" style="font-size:16px;">person_search</span>
+      </div>
+      <div class="card-body">
+        <div class="form-group">
+          <label class="form-label" for="monitor-selector">
+            <span class="dot"></span>
+            Monitor
+          </label>
+          <div class="select-wrap">
+            <select id="monitor-selector">
+              <option value="">Selecione...</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-primary btn-accent brutal-btn" id="confirm-monitor-btn" style="height:52px; min-width:52px; width:52px; padding:0; flex-shrink:0;">
+          <span class="material-symbols-outlined" style="font-size:22px;">check</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading state -->
+    <div id="webaulas-loading" class="active">
+      <div class="spinner"></div>
+      <p class="loading-text">Buscando web aulas da semana...</p>
+    </div>
+
+    <!-- Error state -->
+    <div id="webaulas-error">
+      <span class="material-symbols-outlined error-icon">cloud_off</span>
+      <p class="error-title">Dados indisponíveis no momento</p>
+      <p class="error-desc">Não foi possível carregar as web aulas.<br>Verifique sua conexão e tente novamente.</p>
+      <button class="btn-primary btn-accent brutal-btn" id="reload-webaulas-btn" style="max-width:280px;">
+        <span class="material-symbols-outlined" style="font-size:20px;">refresh</span>
+        Recarregar
+      </button>
+    </div>
+
+    <!-- Empty / no results -->
+    <div id="webaulas-empty">
+      <span class="material-symbols-outlined empty-icon">school</span>
+      <p>Nenhuma web aula encontrada<br>para este monitor</p>
+    </div>
+
+    <!-- WebAulas list -->
+    <div id="webaulas-list"></div>
+
+    <!-- Footer -->
+    <footer style="flex-direction:column;gap:14px;">
+      <div style="display:flex;align-items:flex-start;gap:10px;">
+        <span class="material-symbols-outlined" style="font-size:20px;opacity:0.5;flex-shrink:0;">info</span>
+        <p>Os dados são carregados do webhook e exibem as web aulas da última semana.</p>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Toast -->
+  <div id="toast">Copiado!</div>
+
+  <!-- ── Navigation Drawer ───────────────────────────────────────── -->
+  <aside id="nav-drawer" role="dialog" aria-modal="true" aria-label="Menu de navegação">
+
+    <!-- Brand + Close -->
+    <div style="padding:32px 32px 48px;display:flex;justify-content:space-between;align-items:flex-start;">
+      <div>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:900;color:#fff;letter-spacing:-0.04em;">
+          PLENUM
+        </h2>
+        <div style="height:4px;width:48px;background:#ffd709;margin-top:8px;"></div>
+      </div>
+      <button id="drawer-close-btn" title="Fechar menu"
+        style="color:#ffd709;background:none;border:none;cursor:pointer;padding:4px;display:flex;align-items:center;">
+        <span class="material-symbols-outlined" style="font-size:30px;font-weight:700;">close</span>
+      </button>
+    </div>
+
+    <!-- Nav Items -->
+    <nav style="display:flex;flex-direction:column;flex:1;">
+
+      <a href="sidepanel.html" class="drawer-item"
+        style="padding:24px;display:flex;align-items:center;gap:16px;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;text-transform:uppercase;transition:all .2s;">
+        <span class="material-symbols-outlined" style="font-weight:700;">search</span>
+        Buscar Aluno
+      </a>
+
+      <a href="#" class="drawer-item" id="drawer-dados-aluno"
+        style="padding:24px;display:flex;align-items:center;gap:16px;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;text-transform:uppercase;transition:all .2s;">
+        <span class="material-symbols-outlined">person</span>
+        Dados Aluno
+      </a>
+
+      <a href="messages.html" class="drawer-item"
+        style="padding:24px;display:flex;align-items:center;gap:16px;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;text-transform:uppercase;transition:all .2s;">
+        <span class="material-symbols-outlined">mail</span>
+        Modelos de Mensagens
+      </a>
+
+      <a href="monitors.html" class="drawer-item"
+        style="padding:24px;display:flex;align-items:center;gap:16px;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;text-transform:uppercase;transition:all .2s;">
+        <span class="material-symbols-outlined">monitor</span>
+        Monitores
+      </a>
+
+      <a href="webaulas.html" class="drawer-item active"
+        style="padding:24px;display:flex;align-items:center;gap:16px;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;text-transform:uppercase;transition:all .2s;">
+        <span class="material-symbols-outlined">smart_display</span>
+        Web Aulas
+      </a>
+
+    </nav>
+
+    <!-- Footer -->
+    <div style="padding:24px 32px;margin-top:auto;border-top:3px solid rgba(255,255,255,0.1);">
+      <p style="font-size:10px;color:#555;font-weight:700;text-transform:uppercase;letter-spacing:0.2em;">Plenum &mdash; v1.0</p>
+    </div>
+
+  </aside>
+
+  <script src="webaulas.js"></script>
+</body>
+
+</html>
