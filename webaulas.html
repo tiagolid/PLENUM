@@ -275,8 +275,13 @@
       transition: color 0.15s;
     }
 
-    .wa-uc:hover { color: #b8860b; }
-    html.dark .wa-uc:hover { color: var(--accent); }
+    .wa-uc:hover {
+      color: #b8860b;
+    }
+
+    html.dark .wa-uc:hover {
+      color: var(--accent);
+    }
 
     /* Tema — accent left border quote */
     .wa-tema {
@@ -293,7 +298,9 @@
       word-break: break-word;
     }
 
-    .wa-tema:hover { opacity: 1; }
+    .wa-tema:hover {
+      opacity: 1;
+    }
 
     /* Tutor + Categoria inline */
     .wa-meta-line {
@@ -318,8 +325,14 @@
       transition: color 0.15s, opacity 0.15s;
     }
 
-    .wa-meta-val:hover { opacity: 1; color: #b8860b; }
-    html.dark .wa-meta-val:hover { color: var(--accent); }
+    .wa-meta-val:hover {
+      opacity: 1;
+      color: #b8860b;
+    }
+
+    html.dark .wa-meta-val:hover {
+      color: var(--accent);
+    }
 
     /* Bottom bar: status chips + action icons */
     .wa-bottom {
@@ -589,7 +602,8 @@
             </select>
           </div>
         </div>
-        <button class="btn-primary btn-accent brutal-btn" id="confirm-monitor-btn" style="height:52px; min-width:52px; width:52px; padding:0; flex-shrink:0;">
+        <button class="btn-primary btn-accent brutal-btn" id="confirm-monitor-btn"
+          style="height:52px; min-width:52px; width:52px; padding:0; flex-shrink:0; box-shadow:none;">
           <span class="material-symbols-outlined" style="font-size:22px;">check</span>
         </button>
       </div>
@@ -625,7 +639,7 @@
     <footer style="flex-direction:column;gap:14px;">
       <div style="display:flex;align-items:flex-start;gap:10px;">
         <span class="material-symbols-outlined" style="font-size:20px;opacity:0.5;flex-shrink:0;">info</span>
-        <p>Os dados são carregados do webhook e exibem as web aulas da última semana.</p>
+        <p>Os dados são atualizados de segunda a sexta, às 08:00, às 12:00 e às 18:00.</p>
       </div>
     </footer>
 
@@ -640,7 +654,8 @@
     <!-- Brand + Close -->
     <div style="padding:32px 32px 48px;display:flex;justify-content:space-between;align-items:flex-start;">
       <div>
-        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:900;color:#fff;letter-spacing:-0.04em;">
+        <h2
+          style="font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:900;color:#fff;letter-spacing:-0.04em;">
           PLENUM
         </h2>
         <div style="height:4px;width:48px;background:#ffd709;margin-top:8px;"></div>
@@ -688,7 +703,8 @@
 
     <!-- Footer -->
     <div style="padding:24px 32px;margin-top:auto;border-top:3px solid rgba(255,255,255,0.1);">
-      <p style="font-size:10px;color:#555;font-weight:700;text-transform:uppercase;letter-spacing:0.2em;">Plenum &mdash; v1.0</p>
+      <p style="font-size:10px;color:#555;font-weight:700;text-transform:uppercase;letter-spacing:0.2em;">Plenum &mdash;
+        v1.0</p>
     </div>
 
   </aside>

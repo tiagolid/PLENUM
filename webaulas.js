@@ -3,7 +3,7 @@
 // Registra a página atual para persistência ao trocar de aba
 try {
   chrome.storage.session.set({ unihub_panel_path: 'webaulas.html' });
-} catch (_) {}
+} catch (_) { }
 
 // ── Theme ──────────────────────────────────────────────────────────────────
 const html = document.documentElement;
@@ -170,7 +170,7 @@ confirmMonitorBtn.addEventListener('click', () => {
   }
 
   selectedMonitor = chosen;
-  try { chrome.storage.session.set({ [MONITOR_KEY]: chosen }); } catch (_) {}
+  try { chrome.storage.session.set({ [MONITOR_KEY]: chosen }); } catch (_) { }
 
   monitorSelectCard.style.display = 'none';
   filterAndRender();
@@ -179,7 +179,7 @@ confirmMonitorBtn.addEventListener('click', () => {
 // ── Change monitor ─────────────────────────────────────────────────────────
 changeMonitorBtn.addEventListener('click', () => {
   selectedMonitor = null;
-  try { chrome.storage.session.remove(MONITOR_KEY); } catch (_) {}
+  try { chrome.storage.session.remove(MONITOR_KEY); } catch (_) { }
   showMonitorSelection();
 });
 
@@ -254,7 +254,7 @@ function filterAndRender() {
   if (chip) {
     chip.addEventListener('click', () => {
       selectedMonitor = null;
-      try { chrome.storage.session.remove(MONITOR_KEY); } catch (_) {}
+      try { chrome.storage.session.remove(MONITOR_KEY); } catch (_) { }
       showMonitorSelection();
     });
   }
@@ -333,10 +333,10 @@ function renderWebaulas(webaulas) {
         actionBtns += `<a href="${wa['planilha_origem']}" target="_blank" rel="noopener" class="wa-icon-btn" title="Planilha de origem"><span class="material-symbols-outlined">table_view</span></a>`;
       }
       if (wa['link_categoria']) {
-        actionBtns += `<a href="${wa['link_categoria']}" target="_blank" rel="noopener" class="wa-icon-btn" title="Categoria Moodle"><span class="material-symbols-outlined">category</span></a>`;
+        actionBtns += `<a href="${wa['link_categoria']}" target="_blank" rel="noopener" class="wa-icon-btn" title="Categoria Moodle"><span class="material-symbols-outlined">school</span></a>`;
       }
       if (wa['link_uc']) {
-        actionBtns += `<a href="${wa['link_uc']}" target="_blank" rel="noopener" class="wa-icon-btn" title="UC no Moodle"><span class="material-symbols-outlined">school</span></a>`;
+        actionBtns += `<a href="${wa['link_uc']}" target="_blank" rel="noopener" class="wa-icon-btn" title="UC no Moodle"><span style="font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:10px;letter-spacing:0.02em;">UC</span></a>`;
       }
       if (wa['Link Youtube Formatado']) {
         actionBtns += `<button class="wa-icon-btn accent-icon copy-yt-html-btn" title="Copiar HTML YouTube"><span class="material-symbols-outlined">code</span></button>`;
@@ -434,7 +434,7 @@ async function fetchWebaulas() {
       throw new Error('Resposta inválida ou lista vazia.');
     }
 
-    try { chrome.storage.session.set({ [SESSION_KEY]: data }); } catch (_) {}
+    try { chrome.storage.session.set({ [SESSION_KEY]: data }); } catch (_) { }
 
     allWebaulas = data;
 
