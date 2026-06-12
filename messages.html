@@ -28,24 +28,103 @@
       margin-top: 4px;
     }
 
-    /* Monitor input card */
-    .monitor-card {
+    /* ── Top bar: title + info + actions ──────────────────────────── */
+    .top-bar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+
+    .top-icon-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-card);
+      border: 2px solid var(--border-color);
+      cursor: pointer;
+      color: var(--fg);
+      transition: all 0.15s;
+      padding: 0;
+    }
+
+    .top-icon-btn:hover {
+      background: var(--fg);
+      color: var(--bg);
+    }
+
+    .top-icon-btn .material-symbols-outlined {
+      font-size: 16px;
+    }
+
+    /* ── Monitor chip (inline in subtitle) ────────────────────────── */
+    .monitor-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--accent);
+      color: var(--black);
+      padding: 1px 8px;
+      border: 2px solid var(--border-color);
+      font-size: 9px;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      vertical-align: middle;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .monitor-chip:hover {
+      background: var(--fg);
+      color: var(--bg);
+    }
+
+    .monitor-chip .material-symbols-outlined {
+      font-size: 12px;
+    }
+
+    /* ── Filter bar ──────────────────────────────────────────────── */
+    .filter-bar {
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+    .filter-bar.active {
+      display: flex;
+    }
+
+    /* ── Monitor selection card (compact) ─────────────────────────── */
+    #monitor-select-card {
       border: 3px solid var(--border-color);
       background: var(--bg-card);
       box-shadow: 6px 6px 0px 0px var(--shadow-color);
       overflow: hidden;
+      animation: slide-in 0.25s ease forwards;
     }
 
-    .monitor-card-header {
-      background: var(--fg);
-      color: var(--bg);
-      padding: 10px 16px;
+    #monitor-select-card .card-header {
+      background: var(--accent);
+      color: var(--black);
+      padding: 8px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 12px;
     }
 
-    .monitor-card-header h3 {
+    #monitor-select-card .card-header h3 {
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 800;
       font-size: 11px;
@@ -53,44 +132,17 @@
       letter-spacing: 0.06em;
     }
 
-    .monitor-card-body {
-      padding: 16px;
+    #monitor-select-card .card-body {
+      padding: 12px 16px;
       display: flex;
-      flex-direction: column;
-      gap: 12px;
+      flex-direction: row;
+      align-items: flex-end;
+      gap: 8px;
     }
 
-    .monitor-input-wrap {
-      position: relative;
-    }
-
-    #input-monitor {
-      width: 100%;
-      height: 52px;
-      padding: 0 14px;
-      border: 3px solid var(--border-color);
-      background-color: var(--input-bg);
-      color: var(--fg);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      font-weight: 700;
-      outline: none;
-      transition: background 0.15s, color 0.15s;
-      border-radius: 0;
-    }
-
-    #input-monitor::placeholder {
-      color: var(--input-ph);
-      font-weight: 400;
-    }
-
-    #input-monitor:focus {
-      background-color: var(--accent);
-      color: var(--black);
-    }
-
-    #input-monitor:focus::placeholder {
-      color: rgba(0, 0, 0, 0.4);
+    #monitor-select-card .card-body .form-group {
+      flex: 1;
+      min-width: 0;
     }
 
     /* Message template cards */
@@ -246,36 +298,58 @@
   <!-- MAIN CONTENT -->
   <main id="main-content">
 
-    <!-- Page Title -->
-    <section style="display:flex; justify-content:space-between; align-items:center;">
+    <!-- Top Bar: title + actions -->
+    <section class="top-bar" style="margin-bottom: 24px;">
       <div>
         <h1 class="page-title">Modelos de <span class="highlight">Mensagens</span></h1>
-        <p class="page-subtitle" id="msg-count">Digite o nome do monitor e busque</p>
+        <p class="page-subtitle" id="msgs-subtitle">Carregando modelos...</p>
       </div>
-      <button id="toggle-search-btn" title="Nova Busca" style="display:none; width:40px; height:40px; justify-content:center; align-items:center; background:var(--bg-card); border:2px solid var(--border-color); cursor:pointer; color:var(--fg); border-radius:8px; transition:all 0.2s;">
-        <span class="material-symbols-outlined" style="font-size:20px;">search</span>
-      </button>
+      <div class="top-actions" id="top-actions" style="display:none;">
+        <button class="top-icon-btn" id="change-monitor-btn" title="Trocar monitor">
+          <span class="material-symbols-outlined">swap_horiz</span>
+        </button>
+        <button class="top-icon-btn" id="refresh-msgs-btn" title="Atualizar dados">
+          <span class="material-symbols-outlined">refresh</span>
+        </button>
+        <a id="planilha-btn" href="#" target="_blank" class="top-icon-btn" title="Acessar Planilha" style="display:none;">
+          <span class="material-symbols-outlined">table_view</span>
+        </a>
+      </div>
     </section>
 
-    <!-- Compact Search Input -->
-    <div class="monitor-card" id="search-container" style="margin-bottom: 24px;">
-      <div class="monitor-card-header" style="padding: 8px 16px;">
-        <h3>Nome do Monitor</h3>
-        <span class="material-symbols-outlined" style="font-size:16px;">manage_accounts</span>
-      </div>
-      <div class="monitor-card-body" style="padding: 12px 16px; display: flex; gap: 8px;">
-        <div class="monitor-input-wrap" style="flex: 1;">
-          <input
-            type="text"
-            id="input-monitor"
-            placeholder="Ex: Fulano (apenas o primeiro nome)..."
-            autocomplete="off"
-            spellcheck="false"
-            style="width: 100%; height: 42px; padding: 0 14px; border: 3px solid var(--border-color); background-color: var(--input-bg); color: var(--fg); font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; outline: none; transition: background 0.15s, color 0.15s; border-radius: 0;"
-          />
+    <!-- Filter bar -->
+    <div class="filter-bar" id="filter-bar" style="margin-bottom: 16px;">
+      <div class="form-group" style="flex: 1; margin: 0;">
+        <div class="select-wrap" style="position: relative;">
+          <select id="filter-modalidade" style="width: 100%; height: 36px; padding: 0 14px; border: 3px solid var(--border-color); background: var(--input-bg); color: var(--fg); font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; outline: none; appearance: none; border-radius: 0;">
+            <option value="">Todas as modalidades</option>
+          </select>
+          <span class="material-symbols-outlined" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 16px;">expand_more</span>
         </div>
-        <button class="btn-primary btn-accent brutal-btn" id="search-msgs-btn" style="height: 42px; padding: 0 16px; min-height: 42px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-          <span class="material-symbols-outlined" style="font-size:20px;">search</span>
+      </div>
+    </div>
+
+    <!-- Monitor Selection Card -->
+    <div id="monitor-select-card" style="display:none; margin-bottom: 24px;">
+      <div class="card-header">
+        <h3>Quem é você?</h3>
+        <span class="material-symbols-outlined" style="font-size:16px;">person_search</span>
+      </div>
+      <div class="card-body">
+        <div class="form-group">
+          <label class="form-label" for="monitor-selector">
+            <span class="dot"></span>
+            Monitor
+          </label>
+          <div class="select-wrap">
+            <select id="monitor-selector">
+              <option value="">Selecione...</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-primary btn-accent brutal-btn" id="confirm-monitor-btn"
+          style="height:52px; min-width:52px; width:52px; padding:0; flex-shrink:0; box-shadow:none;">
+          <span class="material-symbols-outlined" style="font-size:22px;">check</span>
         </button>
       </div>
     </div>
@@ -286,10 +360,20 @@
       <p class="loading-text">Carregando modelos...</p>
     </div>
 
-    <!-- Empty state (shown before first search) -->
-    <div id="empty-state" style="display:flex;">
-      <span class="material-symbols-outlined empty-icon">chat_bubble_outline</span>
-      <p>Digite o nome do monitor<br>e clique em Buscar Mensagens</p>
+    <!-- Error state -->
+    <div id="msgs-error" style="display:none; flex-direction:column; align-items:center; justify-content:center; gap:20px; padding:40px 20px; border:3px solid var(--border-color); background:var(--bg-card); box-shadow:6px 6px 0px 0px var(--shadow-color); text-align:center;">
+      <span class="material-symbols-outlined error-icon" style="font-size:42px; color:var(--fg); opacity:0.4;">cloud_off</span>
+      <p class="error-title" style="font-family:'Space Grotesk',sans-serif; font-weight:800; font-size:13px; text-transform:uppercase; letter-spacing:0.05em; color:var(--fg);">Dados indisponíveis no momento</p>
+      <button class="btn-primary btn-accent brutal-btn" id="reload-msgs-btn" style="max-width:280px;">
+        <span class="material-symbols-outlined" style="font-size:20px;">refresh</span>
+        Recarregar
+      </button>
+    </div>
+
+    <!-- Empty state -->
+    <div id="empty-state" style="display:none; flex-direction:column; align-items:center; justify-content:center; gap:14px; padding:48px 20px; text-align:center; border:3px dashed var(--border-color); opacity:0.5;">
+      <span class="material-symbols-outlined empty-icon" style="font-size:42px;">chat_bubble_outline</span>
+      <p style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; line-height:1.5;">Nenhuma mensagem encontrada<br>para este monitor</p>
     </div>
 
     <!-- Messages list (hidden until search runs) -->
